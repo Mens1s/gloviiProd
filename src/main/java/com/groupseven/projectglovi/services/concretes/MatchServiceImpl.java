@@ -5,6 +5,7 @@ import com.groupseven.projectglovi.entities.Match;
 import com.groupseven.projectglovi.entities.User;
 import com.groupseven.projectglovi.enums.EnumGameType;
 import com.groupseven.projectglovi.repositories.MatchRepository;
+import com.groupseven.projectglovi.repositories.UserRepository;
 import com.groupseven.projectglovi.services.abstracts.MatchService;
 import com.groupseven.projectglovi.services.dtos.requests.MatchAddRequest;
 import com.groupseven.projectglovi.services.dtos.requests.MatchEndRequest;
@@ -19,12 +20,18 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
+    private final UserRepository userRepository;
     @Override
     public Integer add(MatchAddRequest request) {
         Match match = MatchMapper.INSTANCE.matchFromMatchAddRequest(request);
-        match.setWinnerPlayer(match.getFirstPlayer());// TODO solve it
-        matchRepository.save(match);
-        return match.getId();
+        Optional<User> user = userRepository.findByUsername(request.getPlayerUsername());
+
+        if(user.isPresent()) {
+            match.setWinnerPlayer(user.get());// TODO solve it
+            matchRepository.save(match);
+            return match.getId();
+        }
+        throw new BusinessException("User not found");
     }
 
     @Override

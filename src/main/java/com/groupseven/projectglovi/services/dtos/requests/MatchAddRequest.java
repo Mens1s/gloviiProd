@@ -23,6 +23,8 @@ public class MatchAddRequest {
     @NotBlank(message = Messages.ValidationErrors.NOT_BLANK)
     private Integer secondPlayerId;
 
+    private String playerUsername;
+
     private Integer winnerPlayerId;
 
     @NotBlank(message = Messages.ValidationErrors.NOT_BLANK)
