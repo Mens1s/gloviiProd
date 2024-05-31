@@ -20,11 +20,11 @@ public class GloveServiceImpl implements GloveService {
     public void updateGloveData(String data) {
         List<String> dt = new ArrayList<>();
 
-        for(String d : data.split(",")){
+        for(String d : data.split(":")){
             dt.add(d);
         }
 
-        Optional<Glove> glove = gloveRepository.findGloveByName("glove");
+        Optional<Glove> glove = gloveRepository.findGloveByName(dt.get(0));
         if(glove.isEmpty()){
             throw new RuntimeException("Glove not found");
         }
@@ -47,7 +47,7 @@ public class GloveServiceImpl implements GloveService {
             defGlove.setY(dt.get(2));
             defGlove.setZ(dt.get(3));
             defGlove.setButtonFirst(dt.get(4));
-        }else if(dt.size() == 6) {
+        }else if(dt.size() >= 6) {
 
             defGlove.setX(dt.get(1));
             defGlove.setY(dt.get(2));

@@ -20,6 +20,12 @@ public class GloveController {
        gloveService.updateGloveData(data);
     }
 
+    @PostMapping("/updateme")
+    public void updateGloveData(@RequestBody GloveUpdateData data){
+        System.out.println(data.getData());
+        gloveService.updateGloveData(data.getData());
+    }
+
     @GetMapping("/update")
     public void updateGloveDatas(@RequestParam String data){
         System.out.println(data);
